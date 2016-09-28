@@ -6,11 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Spark</title>
+    <title>Survacity</title>
 
     <!-- Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
-
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+	<link href="/css/app.css" rel="stylesheet">
     <style>
         body, html {
             background: url('/img/spark-bg.png');
@@ -70,7 +71,7 @@
 </head>
 <body>
     <div class="full-height flex-column">
-        <nav class="links">
+       <!-- <nav class="links">
             <a href="/login" style="margin-right: 15px;">
                 <button>
                     Login
@@ -82,11 +83,12 @@
                     Register
                 </button>
             </a>
-        </nav>
+        </nav>-->
 
         <div class="flex-fill flex-center">
-            <h1 class="text-center">
-                <img src="/img/color-logo.png">
+            <h1 class="text-center" style="font-size: 72px;font-weight: bold;">
+                <i aria-hidden="true" class="fa fa-paper-plane-o"></i> Survacity<br/>
+                <span style="font-size: 20px;font-weight: normal;padding-top:-10px">Coming Soon........</span>
             </h1>
         </div>
     </div>

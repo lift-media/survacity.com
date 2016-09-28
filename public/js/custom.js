@@ -22,5 +22,19 @@ $( document ).ready(function() {
 		$('#main-container').css('opacity',1);
     	return false;
         //event.preventDefault();
-    });
+    });   
+   /* $( "#schedule-date" ).datepicker({
+		dateFormat: "mm/dd/yy",
+		changeMonth: true,
+		changeYear: true		 
+	});*/
+	$('#schedule-date').datetimepicker({
+				icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                }
+
+		});
 });

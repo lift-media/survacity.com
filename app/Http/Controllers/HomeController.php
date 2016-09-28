@@ -227,4 +227,20 @@ class HomeController extends Controller
 		UsersContact::where('id', $request->id)->delete();
 		return redirect('/listed-contacts')->with('status',"User's contact deleted successfully");
 	}
+	public function showEmails()
+	{
+		return view("manage_emails");
+	}
+	public function showScheduleSendEmails()
+	{
+		$user = Auth::user();
+		$current_team = $user->currentTeam;
+		$all_teams = $user->teams;
+		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
+		return view("schedule_send_emails",compact("email_templates","all_teams","current_team"));
+	}
+	public function saveScheduleSendEmails()
+	{
+		return redirect("manage-emails");
+	}
 }
