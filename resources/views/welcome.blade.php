@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Spark</title>
+    <title>Survacity</title>
 
     <!-- Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
@@ -86,7 +86,7 @@
         </nav>
 
         <div class="flex-fill flex-center">
-            <h1 class="text-center">
+            <h1 class="text-center" style="font-size: 72px;font-weight: bold;">
                 <i aria-hidden="true" class="fa fa-paper-plane-o"></i> Survacity
             </h1>
         </div>
