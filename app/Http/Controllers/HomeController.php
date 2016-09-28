@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ini_set('max_execution_time', 0);
 use Illuminate\Http\Request;
 use Auth;
 use App\EmailTemplate;

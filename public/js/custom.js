@@ -8,6 +8,7 @@ function customizedConfirm(url)
 	return false;
 	
 }
+
 $( document ).ready(function() {
 	 $('#btnYes').click(function(event) {
 		var popupurl = $('#popupurl').val(); 
@@ -29,4 +30,15 @@ $( document ).ready(function() {
 		changeYear: true		 
 	});*/
 	$('#schedule-date').datetimepicker();
+	function changedTeamVsIndividual(va)
+	{
+		if(va=="Team"){
+			$('#teamSelect').show();
+			$('#indEmails').hide();
+		}else if(va=="Individual"){
+			$('#teamSelect').hide();
+			$('#indEmails').show();
+		}
+	}
 });
+
