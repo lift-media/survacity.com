@@ -17,7 +17,20 @@
     <link href="/css/app.css" rel="stylesheet">
 	<link rel="stylesheet" href="/datatables/jquery.dataTables.min.css">
 	<link href="/css/oneui.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
+	<!--<link rel="stylesheet" href="{{url('css')}}/styles.css">-->
+	<link rel="stylesheet" href="{{url('css/token-input.css')}}" type="text/css" />
+	<link rel="stylesheet" href="{{url('css/token-input-fb.css')}}" type="text/css" />
+	
+	<link rel="stylesheet" href="{{url('css/bootstrap-datetimepicker.min.css')}}" type="text/css" />
+	
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{asset('js/jquery.tokeninput.js')}}"></script>
+    
+    <script type="text/javascript" src="{{asset('js/bootstrap-datetimepicker.min.js')}}"></script>
     @yield('scripts', '')
 
     <!-- Global Spark Object -->
