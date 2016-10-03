@@ -11,4 +11,8 @@
 
 require('./../spark-components/bootstrap');
 
+
 require('./home');
+
+// Load the new Vue component...
+require('./settings/profile/update-profile-details');

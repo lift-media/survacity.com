@@ -12,5 +12,11 @@
 	<a href="/import-contacts" <?php echo (Request::segment(1)=='import-contacts')?'class="activeTop"':"";?>>Import Contacts</a>
 </li>
 <li>
+	<a href="/manage-campaigns" <?php echo (Request::segment(1)=='manage-campaigns' || Request::segment(1)=='create-campaign')?'class="activeTop"':"";?>>Manage Campaigns</a>
+</li>
+
+<?php /*?>
+<li>
 	<a href="/manage-emails" <?php echo (Request::segment(1)=='manage-emails' || Request::segment(1)=='schedule-send-emails')?'class="activeTop"':"";?>>Manage Emails</a>
 </li>
+<?php */?>

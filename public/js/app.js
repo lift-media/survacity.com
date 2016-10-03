@@ -33978,7 +33978,7 @@ var app = new Vue({
   mixins: [require('spark')]
 });
 
-},{"./components/bootstrap":36,"spark":150,"spark-bootstrap":149}],36:[function(require,module,exports){
+},{"./components/bootstrap":36,"spark":151,"spark-bootstrap":150}],36:[function(require,module,exports){
 'use strict';
 
 /*
@@ -33995,7 +33995,10 @@ require('./../spark-components/bootstrap');
 
 require('./home');
 
-},{"./../spark-components/bootstrap":40,"./home":37}],37:[function(require,module,exports){
+// Load the new Vue component...
+require('./settings/profile/update-profile-details');
+
+},{"./../spark-components/bootstrap":41,"./home":37,"./settings/profile/update-profile-details":38}],37:[function(require,module,exports){
 'use strict';
 
 Vue.component('home', {
@@ -34008,7 +34011,6 @@ Vue.component('home', {
 		//console.log(Spark.state.user.name);
 
 		this.$http.get('/team/name').then(function (response) {
-			//$("#currentTeamName").val(response.data);
 			console.log(response.data);
 		});
 		this.$http.get('api/test').then(function (response) {
@@ -34026,13 +34028,42 @@ Vue.component('home', {
 },{}],38:[function(require,module,exports){
 'use strict';
 
+Vue.component('update-profile-details', {
+    props: ['user'],
+
+    data: function data() {
+        return {
+            form: new SparkForm({
+                age: ''
+            })
+        };
+    },
+    ready: function ready() {
+        this.form.age = this.user.age;
+    },
+
+
+    methods: {
+        update: function update() {
+            var _this = this;
+
+            Spark.put('/settings/profile/details', this.form).then(function (response) {
+                _this.$dispatch('updateUser');
+            });
+        }
+    }
+});
+
+},{}],39:[function(require,module,exports){
+'use strict';
+
 var base = require('auth/register-braintree');
 
 Vue.component('spark-register-braintree', {
     mixins: [base]
 });
 
-},{"auth/register-braintree":87}],39:[function(require,module,exports){
+},{"auth/register-braintree":88}],40:[function(require,module,exports){
 'use strict';
 
 var base = require('auth/register-stripe');
@@ -34041,7 +34072,7 @@ Vue.component('spark-register-stripe', {
     mixins: [base]
 });
 
-},{"auth/register-stripe":88}],40:[function(require,module,exports){
+},{"auth/register-stripe":89}],41:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34136,7 +34167,7 @@ require('./kiosk/users');
 require('./kiosk/profile');
 require('./kiosk/add-discount');
 
-},{"./auth/register-braintree":38,"./auth/register-stripe":39,"./kiosk/add-discount":41,"./kiosk/announcements":42,"./kiosk/kiosk":43,"./kiosk/metrics":44,"./kiosk/profile":45,"./kiosk/users":46,"./navbar/navbar":47,"./notifications/notifications":48,"./settings/api":49,"./settings/api/create-token":50,"./settings/api/tokens":51,"./settings/invoices":52,"./settings/invoices/invoice-list":53,"./settings/invoices/update-extra-billing-information":54,"./settings/payment-method-braintree":55,"./settings/payment-method-stripe":56,"./settings/payment-method/redeem-coupon":57,"./settings/payment-method/update-payment-method-braintree":58,"./settings/payment-method/update-payment-method-stripe":59,"./settings/payment-method/update-vat-id":60,"./settings/profile":61,"./settings/profile/update-contact-information":62,"./settings/profile/update-profile-photo":63,"./settings/security":64,"./settings/security/disable-two-factor-auth":65,"./settings/security/enable-two-factor-auth":66,"./settings/security/update-password":67,"./settings/settings":68,"./settings/subscription":69,"./settings/subscription/cancel-subscription":70,"./settings/subscription/resume-subscription":71,"./settings/subscription/subscribe-braintree":72,"./settings/subscription/subscribe-stripe":73,"./settings/subscription/update-subscription":74,"./settings/teams":75,"./settings/teams/create-team":76,"./settings/teams/current-teams":77,"./settings/teams/mailed-invitations":78,"./settings/teams/pending-invitations":79,"./settings/teams/send-invitation":80,"./settings/teams/team-members":81,"./settings/teams/team-membership":82,"./settings/teams/team-profile":83,"./settings/teams/team-settings":84,"./settings/teams/update-team-name":85,"./settings/teams/update-team-photo":86}],41:[function(require,module,exports){
+},{"./auth/register-braintree":39,"./auth/register-stripe":40,"./kiosk/add-discount":42,"./kiosk/announcements":43,"./kiosk/kiosk":44,"./kiosk/metrics":45,"./kiosk/profile":46,"./kiosk/users":47,"./navbar/navbar":48,"./notifications/notifications":49,"./settings/api":50,"./settings/api/create-token":51,"./settings/api/tokens":52,"./settings/invoices":53,"./settings/invoices/invoice-list":54,"./settings/invoices/update-extra-billing-information":55,"./settings/payment-method-braintree":56,"./settings/payment-method-stripe":57,"./settings/payment-method/redeem-coupon":58,"./settings/payment-method/update-payment-method-braintree":59,"./settings/payment-method/update-payment-method-stripe":60,"./settings/payment-method/update-vat-id":61,"./settings/profile":62,"./settings/profile/update-contact-information":63,"./settings/profile/update-profile-photo":64,"./settings/security":65,"./settings/security/disable-two-factor-auth":66,"./settings/security/enable-two-factor-auth":67,"./settings/security/update-password":68,"./settings/settings":69,"./settings/subscription":70,"./settings/subscription/cancel-subscription":71,"./settings/subscription/resume-subscription":72,"./settings/subscription/subscribe-braintree":73,"./settings/subscription/subscribe-stripe":74,"./settings/subscription/update-subscription":75,"./settings/teams":76,"./settings/teams/create-team":77,"./settings/teams/current-teams":78,"./settings/teams/mailed-invitations":79,"./settings/teams/pending-invitations":80,"./settings/teams/send-invitation":81,"./settings/teams/team-members":82,"./settings/teams/team-membership":83,"./settings/teams/team-profile":84,"./settings/teams/team-settings":85,"./settings/teams/update-team-name":86,"./settings/teams/update-team-photo":87}],42:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/add-discount');
@@ -34145,7 +34176,7 @@ Vue.component('spark-kiosk-add-discount', {
     mixins: [base]
 });
 
-},{"kiosk/add-discount":95}],42:[function(require,module,exports){
+},{"kiosk/add-discount":96}],43:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/announcements');
@@ -34154,7 +34185,7 @@ Vue.component('spark-kiosk-announcements', {
     mixins: [base]
 });
 
-},{"kiosk/announcements":96}],43:[function(require,module,exports){
+},{"kiosk/announcements":97}],44:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/kiosk');
@@ -34163,7 +34194,7 @@ Vue.component('spark-kiosk', {
     mixins: [base]
 });
 
-},{"kiosk/kiosk":97}],44:[function(require,module,exports){
+},{"kiosk/kiosk":98}],45:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/metrics');
@@ -34172,7 +34203,7 @@ Vue.component('spark-kiosk-metrics', {
     mixins: [base]
 });
 
-},{"kiosk/metrics":98}],45:[function(require,module,exports){
+},{"kiosk/metrics":99}],46:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/profile');
@@ -34181,7 +34212,7 @@ Vue.component('spark-kiosk-profile', {
     mixins: [base]
 });
 
-},{"kiosk/profile":99}],46:[function(require,module,exports){
+},{"kiosk/profile":100}],47:[function(require,module,exports){
 'use strict';
 
 var base = require('kiosk/users');
@@ -34190,7 +34221,7 @@ Vue.component('spark-kiosk-users', {
     mixins: [base]
 });
 
-},{"kiosk/users":100}],47:[function(require,module,exports){
+},{"kiosk/users":101}],48:[function(require,module,exports){
 'use strict';
 
 var base = require('navbar/navbar');
@@ -34199,7 +34230,7 @@ Vue.component('spark-navbar', {
     mixins: [base]
 });
 
-},{"navbar/navbar":109}],48:[function(require,module,exports){
+},{"navbar/navbar":110}],49:[function(require,module,exports){
 'use strict';
 
 var base = require('notifications/notifications');
@@ -34208,7 +34239,7 @@ Vue.component('spark-notifications', {
     mixins: [base]
 });
 
-},{"notifications/notifications":110}],49:[function(require,module,exports){
+},{"notifications/notifications":111}],50:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api');
@@ -34217,7 +34248,7 @@ Vue.component('spark-api', {
     mixins: [base]
 });
 
-},{"settings/api":111}],50:[function(require,module,exports){
+},{"settings/api":112}],51:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/create-token');
@@ -34226,7 +34257,7 @@ Vue.component('spark-create-token', {
     mixins: [base]
 });
 
-},{"settings/api/create-token":112}],51:[function(require,module,exports){
+},{"settings/api/create-token":113}],52:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/api/tokens');
@@ -34235,7 +34266,7 @@ Vue.component('spark-tokens', {
     mixins: [base]
 });
 
-},{"settings/api/tokens":113}],52:[function(require,module,exports){
+},{"settings/api/tokens":114}],53:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices');
@@ -34244,7 +34275,7 @@ Vue.component('spark-invoices', {
     mixins: [base]
 });
 
-},{"settings/invoices":114}],53:[function(require,module,exports){
+},{"settings/invoices":115}],54:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/invoice-list');
@@ -34253,7 +34284,7 @@ Vue.component('spark-invoice-list', {
     mixins: [base]
 });
 
-},{"settings/invoices/invoice-list":115}],54:[function(require,module,exports){
+},{"settings/invoices/invoice-list":116}],55:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/invoices/update-extra-billing-information');
@@ -34262,7 +34293,7 @@ Vue.component('spark-update-extra-billing-information', {
     mixins: [base]
 });
 
-},{"settings/invoices/update-extra-billing-information":116}],55:[function(require,module,exports){
+},{"settings/invoices/update-extra-billing-information":117}],56:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-braintree');
@@ -34271,7 +34302,7 @@ Vue.component('spark-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method-braintree":117}],56:[function(require,module,exports){
+},{"settings/payment-method-braintree":118}],57:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method-stripe');
@@ -34280,7 +34311,7 @@ Vue.component('spark-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method-stripe":118}],57:[function(require,module,exports){
+},{"settings/payment-method-stripe":119}],58:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/redeem-coupon');
@@ -34289,7 +34320,7 @@ Vue.component('spark-redeem-coupon', {
     mixins: [base]
 });
 
-},{"settings/payment-method/redeem-coupon":119}],58:[function(require,module,exports){
+},{"settings/payment-method/redeem-coupon":120}],59:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-braintree');
@@ -34298,7 +34329,7 @@ Vue.component('spark-update-payment-method-braintree', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-braintree":120}],59:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-braintree":121}],60:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-payment-method-stripe');
@@ -34307,7 +34338,7 @@ Vue.component('spark-update-payment-method-stripe', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-payment-method-stripe":121}],60:[function(require,module,exports){
+},{"settings/payment-method/update-payment-method-stripe":122}],61:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/payment-method/update-vat-id');
@@ -34316,7 +34347,7 @@ Vue.component('spark-update-vat-id', {
     mixins: [base]
 });
 
-},{"settings/payment-method/update-vat-id":122}],61:[function(require,module,exports){
+},{"settings/payment-method/update-vat-id":123}],62:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile');
@@ -34325,7 +34356,7 @@ Vue.component('spark-profile', {
     mixins: [base]
 });
 
-},{"settings/profile":123}],62:[function(require,module,exports){
+},{"settings/profile":124}],63:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-contact-information');
@@ -34334,7 +34365,7 @@ Vue.component('spark-update-contact-information', {
     mixins: [base]
 });
 
-},{"settings/profile/update-contact-information":124}],63:[function(require,module,exports){
+},{"settings/profile/update-contact-information":125}],64:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/profile/update-profile-photo');
@@ -34343,7 +34374,7 @@ Vue.component('spark-update-profile-photo', {
     mixins: [base]
 });
 
-},{"settings/profile/update-profile-photo":125}],64:[function(require,module,exports){
+},{"settings/profile/update-profile-photo":126}],65:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security');
@@ -34352,7 +34383,7 @@ Vue.component('spark-security', {
     mixins: [base]
 });
 
-},{"settings/security":126}],65:[function(require,module,exports){
+},{"settings/security":127}],66:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/disable-two-factor-auth');
@@ -34361,7 +34392,7 @@ Vue.component('spark-disable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/disable-two-factor-auth":127}],66:[function(require,module,exports){
+},{"settings/security/disable-two-factor-auth":128}],67:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/enable-two-factor-auth');
@@ -34370,7 +34401,7 @@ Vue.component('spark-enable-two-factor-auth', {
     mixins: [base]
 });
 
-},{"settings/security/enable-two-factor-auth":128}],67:[function(require,module,exports){
+},{"settings/security/enable-two-factor-auth":129}],68:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/security/update-password');
@@ -34379,7 +34410,7 @@ Vue.component('spark-update-password', {
     mixins: [base]
 });
 
-},{"settings/security/update-password":129}],68:[function(require,module,exports){
+},{"settings/security/update-password":130}],69:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/settings');
@@ -34388,7 +34419,7 @@ Vue.component('spark-settings', {
     mixins: [base]
 });
 
-},{"settings/settings":130}],69:[function(require,module,exports){
+},{"settings/settings":131}],70:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription');
@@ -34397,7 +34428,7 @@ Vue.component('spark-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription":131}],70:[function(require,module,exports){
+},{"settings/subscription":132}],71:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/cancel-subscription');
@@ -34406,7 +34437,7 @@ Vue.component('spark-cancel-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/cancel-subscription":132}],71:[function(require,module,exports){
+},{"settings/subscription/cancel-subscription":133}],72:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/resume-subscription');
@@ -34415,7 +34446,7 @@ Vue.component('spark-resume-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/resume-subscription":133}],72:[function(require,module,exports){
+},{"settings/subscription/resume-subscription":134}],73:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-braintree');
@@ -34424,7 +34455,7 @@ Vue.component('spark-subscribe-braintree', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-braintree":134}],73:[function(require,module,exports){
+},{"settings/subscription/subscribe-braintree":135}],74:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/subscribe-stripe');
@@ -34433,7 +34464,7 @@ Vue.component('spark-subscribe-stripe', {
     mixins: [base]
 });
 
-},{"settings/subscription/subscribe-stripe":135}],74:[function(require,module,exports){
+},{"settings/subscription/subscribe-stripe":136}],75:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/subscription/update-subscription');
@@ -34442,7 +34473,7 @@ Vue.component('spark-update-subscription', {
     mixins: [base]
 });
 
-},{"settings/subscription/update-subscription":136}],75:[function(require,module,exports){
+},{"settings/subscription/update-subscription":137}],76:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams');
@@ -34451,7 +34482,7 @@ Vue.component('spark-teams', {
     mixins: [base]
 });
 
-},{"settings/teams":137}],76:[function(require,module,exports){
+},{"settings/teams":138}],77:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/create-team');
@@ -34460,7 +34491,7 @@ Vue.component('spark-create-team', {
     mixins: [base]
 });
 
-},{"settings/teams/create-team":138}],77:[function(require,module,exports){
+},{"settings/teams/create-team":139}],78:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/current-teams');
@@ -34469,7 +34500,7 @@ Vue.component('spark-current-teams', {
     mixins: [base]
 });
 
-},{"settings/teams/current-teams":139}],78:[function(require,module,exports){
+},{"settings/teams/current-teams":140}],79:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/mailed-invitations');
@@ -34478,7 +34509,7 @@ Vue.component('spark-mailed-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/mailed-invitations":140}],79:[function(require,module,exports){
+},{"settings/teams/mailed-invitations":141}],80:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/pending-invitations');
@@ -34487,7 +34518,7 @@ Vue.component('spark-pending-invitations', {
     mixins: [base]
 });
 
-},{"settings/teams/pending-invitations":141}],80:[function(require,module,exports){
+},{"settings/teams/pending-invitations":142}],81:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/send-invitation');
@@ -34496,7 +34527,7 @@ Vue.component('spark-send-invitation', {
     mixins: [base]
 });
 
-},{"settings/teams/send-invitation":142}],81:[function(require,module,exports){
+},{"settings/teams/send-invitation":143}],82:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-members');
@@ -34505,7 +34536,7 @@ Vue.component('spark-team-members', {
     mixins: [base]
 });
 
-},{"settings/teams/team-members":143}],82:[function(require,module,exports){
+},{"settings/teams/team-members":144}],83:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-membership');
@@ -34514,7 +34545,7 @@ Vue.component('spark-team-membership', {
     mixins: [base]
 });
 
-},{"settings/teams/team-membership":144}],83:[function(require,module,exports){
+},{"settings/teams/team-membership":145}],84:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-profile');
@@ -34523,7 +34554,7 @@ Vue.component('spark-team-profile', {
     mixins: [base]
 });
 
-},{"settings/teams/team-profile":145}],84:[function(require,module,exports){
+},{"settings/teams/team-profile":146}],85:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/team-settings');
@@ -34532,7 +34563,7 @@ Vue.component('spark-team-settings', {
     mixins: [base]
 });
 
-},{"settings/teams/team-settings":146}],85:[function(require,module,exports){
+},{"settings/teams/team-settings":147}],86:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-name');
@@ -34541,7 +34572,7 @@ Vue.component('spark-update-team-name', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-name":147}],86:[function(require,module,exports){
+},{"settings/teams/update-team-name":148}],87:[function(require,module,exports){
 'use strict';
 
 var base = require('settings/teams/update-team-photo');
@@ -34550,7 +34581,7 @@ Vue.component('spark-update-team-photo', {
     mixins: [base]
 });
 
-},{"settings/teams/update-team-photo":148}],87:[function(require,module,exports){
+},{"settings/teams/update-team-photo":149}],88:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34669,7 +34700,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/braintree":102,"./../mixins/plans":104,"./../mixins/register":105}],88:[function(require,module,exports){
+},{"./../mixins/braintree":103,"./../mixins/plans":105,"./../mixins/register":106}],89:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -34896,7 +34927,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":104,"./../mixins/register":105,"./../mixins/vat":108}],89:[function(require,module,exports){
+},{"./../mixins/plans":105,"./../mixins/register":106,"./../mixins/vat":109}],90:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34920,7 +34951,7 @@ Vue.filter('relative', function (value) {
   return moment.utc(value).local().locale('en-short').fromNow();
 });
 
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 /**
@@ -34947,7 +34978,7 @@ require('./errors');
  */
 $.extend(Spark, require('./http'));
 
-},{"./errors":91,"./form":92,"./http":93}],91:[function(require,module,exports){
+},{"./errors":92,"./form":93,"./http":94}],92:[function(require,module,exports){
 'use strict';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
@@ -35014,7 +35045,7 @@ window.SparkFormErrors = function () {
     };
 };
 
-},{}],92:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 "use strict";
 
 /**
@@ -35068,7 +35099,7 @@ window.SparkForm = function (data) {
   };
 };
 
-},{}],93:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35119,7 +35150,7 @@ module.exports = {
     }
 };
 
-},{}],94:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict';
 
 module.exports = function (request, next) {
@@ -35145,7 +35176,7 @@ module.exports = function (request, next) {
     });
 };
 
-},{}],95:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 function kioskAddDiscountForm() {
@@ -35209,7 +35240,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":103}],96:[function(require,module,exports){
+},{"./../mixins/discounts":104}],97:[function(require,module,exports){
 'use strict';
 
 var announcementsCreateForm = function announcementsCreateForm() {
@@ -35330,7 +35361,7 @@ module.exports = {
     }
 };
 
-},{}],97:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35365,7 +35396,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":107}],98:[function(require,module,exports){
+},{"./../mixins/tab-state":108}],99:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35647,7 +35678,7 @@ module.exports = {
     }
 };
 
-},{}],99:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35795,7 +35826,7 @@ module.exports = {
     }
 };
 
-},{}],100:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35928,7 +35959,7 @@ module.exports = {
     }
 };
 
-},{}],101:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -35962,7 +35993,7 @@ module.exports = {
     }
 };
 
-},{}],102:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 'use strict';
 
 window.braintreeCheckout = [];
@@ -36017,7 +36048,7 @@ module.exports = {
     }
 };
 
-},{}],103:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36114,7 +36145,7 @@ module.exports = {
     }
 };
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36259,7 +36290,7 @@ module.exports = {
     }
 };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36373,7 +36404,7 @@ module.exports = {
     }
 };
 
-},{}],106:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 /*
@@ -36539,7 +36570,7 @@ module.exports = {
     }
 };
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36636,7 +36667,7 @@ module.exports = {
     }
 };
 
-},{}],108:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36678,7 +36709,7 @@ module.exports = {
     }
 };
 
-},{}],109:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36702,7 +36733,7 @@ module.exports = {
     }
 };
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36786,7 +36817,7 @@ module.exports = {
     }
 };
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36841,7 +36872,7 @@ module.exports = {
     }
 };
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -36968,7 +36999,7 @@ module.exports = {
     }
 };
 
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37076,7 +37107,7 @@ module.exports = {
     }
 };
 
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37125,7 +37156,7 @@ module.exports = {
 	}
 };
 
-},{}],115:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37141,7 +37172,7 @@ module.exports = {
     }
 };
 
-},{}],116:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37186,7 +37217,7 @@ module.exports = {
     }
 };
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37260,7 +37291,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":103}],118:[function(require,module,exports){
+},{"./../mixins/discounts":104}],119:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37302,7 +37333,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/discounts":103}],119:[function(require,module,exports){
+},{"./../mixins/discounts":104}],120:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37345,7 +37376,7 @@ module.exports = {
     }
 };
 
-},{}],120:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37441,7 +37472,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":102}],121:[function(require,module,exports){
+},{"./../../mixins/braintree":103}],122:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37626,7 +37657,7 @@ module.exports = {
     }
 };
 
-},{}],122:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37669,14 +37700,14 @@ module.exports = {
     }
 };
 
-},{}],123:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user']
 };
 
-},{}],124:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37718,7 +37749,7 @@ module.exports = {
     }
 };
 
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37792,7 +37823,7 @@ module.exports = {
     }
 };
 
-},{}],126:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37820,7 +37851,7 @@ module.exports = {
     }
 };
 
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37850,7 +37881,7 @@ module.exports = {
 	}
 };
 
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37894,7 +37925,7 @@ module.exports = {
 	}
 };
 
-},{}],129:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37922,7 +37953,7 @@ module.exports = {
     }
 };
 
-},{}],130:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -37951,7 +37982,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/tab-state":107}],131:[function(require,module,exports){
+},{"./../mixins/tab-state":108}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38012,7 +38043,7 @@ module.exports = {
     }
 };
 
-},{"./../mixins/plans":104,"./../mixins/subscriptions":106}],132:[function(require,module,exports){
+},{"./../mixins/plans":105,"./../mixins/subscriptions":107}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38062,7 +38093,7 @@ module.exports = {
     }
 };
 
-},{}],133:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38103,7 +38134,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":104,"./../../mixins/subscriptions":106}],134:[function(require,module,exports){
+},{"./../../mixins/plans":105,"./../../mixins/subscriptions":107}],135:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38198,7 +38229,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/braintree":102,"./../../mixins/plans":104,"./../../mixins/subscriptions":106}],135:[function(require,module,exports){
+},{"./../../mixins/braintree":103,"./../../mixins/plans":105,"./../../mixins/subscriptions":107}],136:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38399,7 +38430,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":104,"./../../mixins/subscriptions":106,"./../../mixins/vat":108}],136:[function(require,module,exports){
+},{"./../../mixins/plans":105,"./../../mixins/subscriptions":107,"./../../mixins/vat":109}],137:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38493,14 +38524,14 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/plans":104,"./../../mixins/subscriptions":106}],137:[function(require,module,exports){
+},{"./../../mixins/plans":105,"./../../mixins/subscriptions":107}],138:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'teams']
 };
 
-},{}],138:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38548,7 +38579,7 @@ module.exports = {
     }
 };
 
-},{}],139:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38637,7 +38668,7 @@ module.exports = {
     }
 };
 
-},{}],140:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38659,7 +38690,7 @@ module.exports = {
     }
 };
 
-},{}],141:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38735,7 +38766,7 @@ module.exports = {
     }
 };
 
-},{}],142:[function(require,module,exports){
+},{}],143:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38769,7 +38800,7 @@ module.exports = {
     }
 };
 
-},{}],143:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38919,7 +38950,7 @@ module.exports = {
     }
 };
 
-},{}],144:[function(require,module,exports){
+},{}],145:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -38966,14 +38997,14 @@ module.exports = {
     }
 };
 
-},{}],145:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     props: ['user', 'team']
 };
 
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39034,7 +39065,7 @@ module.exports = {
     }
 };
 
-},{"./../../mixins/tab-state":107}],147:[function(require,module,exports){
+},{"./../../mixins/tab-state":108}],148:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39075,7 +39106,7 @@ module.exports = {
     }
 };
 
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -39158,7 +39189,7 @@ module.exports = {
     }
 };
 
-},{}],149:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39209,7 +39240,7 @@ if ($('#spark-app').length > 0) {
     require('vue-bootstrap');
 }
 
-},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":151}],150:[function(require,module,exports){
+},{"bootstrap/dist/js/npm":3,"jquery":16,"js-cookie":17,"moment":18,"promise":20,"underscore":28,"urijs":31,"vue-bootstrap":152}],151:[function(require,module,exports){
 'use strict';
 
 /**
@@ -39492,7 +39523,7 @@ module.exports = {
     }
 };
 
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict';
 
 /*
@@ -39528,6 +39559,6 @@ require('./filters');
  */
 require('./forms/bootstrap');
 
-},{"./filters":89,"./forms/bootstrap":90,"./interceptors":94,"./mixin":101,"vue":34,"vue-resource":33}]},{},[35]);
+},{"./filters":90,"./forms/bootstrap":91,"./interceptors":95,"./mixin":102,"vue":34,"vue-resource":33}]},{},[35]);
 
 //# sourceMappingURL=app.js.map

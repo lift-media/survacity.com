@@ -7385,12 +7385,5 @@ body {
 [v-cloak] {
   display: none;
 }
-/* 28 Sep 2016 */
-.navbar-nav li a:hover{
-	color: #3097d1 !important;
-}
-.activeTop {
-	color: #3097d1 !important;
-	border-bottom: 3px solid #3097d1;
-}
+
 /*# sourceMappingURL=app.css.map */
