@@ -43,6 +43,9 @@ Route::get('save-campaign-name/{id}', 'HomeController@saveCampaignName');
 Route::put('/settings/profile/details', 'ProfileDetailsController@update');
 
 
+Route::get('send-scheduled-email', 'CronSchedule@sendScheduledEmail');
+
+
 
 Route::get('manage-emails', 'HomeController@showEmails');
 Route::get('schedule-send-emails', 'HomeController@showScheduleSendEmails');

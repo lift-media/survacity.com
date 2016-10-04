@@ -122,7 +122,12 @@
 								<label class="col-md-2 control-label">Schedule Date</label>
 
 								<div class="col-md-10">
-									<input type="text" name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control" readonly value="{{date('Y-m-d H:i',strtotime($step['schedule_date']))}}">
+									<select name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control">
+										<option value="">Select</option>
+										@for($ii=1;$ii<=50;$ii++)
+											<option value="{{$ii}}" @if($step['scheduled_day']==$ii) {{'selected="selected"'}} @else {{""}} @endif>{{$ii}}</option>
+										@endfor
+									</select>
 									<div id="schedule_dateError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
 									<span class="help-block" style="display: none;">
 										

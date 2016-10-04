@@ -3,14 +3,19 @@ Vue.component('update-profile-details', {
 
     data() {
         return {
-            form: new SparkForm({
-                age: ''
+            form: new SparkForm({               
+                from_email: '',
+                signature: ''
             })
         };
     },
 
     ready() {
-        this.form.age = this.user.age;
+        this.form.from_email = this.user.from_email;
+        this.form.signature = this.user.signature;
+        //alert(this.user.from_email+ ' : '+this.user.signature);
+        //console.log(this.user.from_email);
+        //console.log(this.user.signature);
     },
 
     methods: {

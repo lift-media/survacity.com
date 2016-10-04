@@ -52,7 +52,7 @@
 						<div class="col-md-12 "><hr></div>
 						<input type="hidden" name="editCampId" id="editCampId" value="">
 					<?php 
-						for($i=1;$i<=5;$i++){
+						for($i=1;$i<=10;$i++){
 					?>	
 					<div id="step{{$i}}">
 						<div class="form-group">
@@ -118,10 +118,21 @@
 
 						<!-- Email -->
 						<div class="form-group">
-								<label class="col-md-2 control-label">Schedule Date</label>
+								<label class="col-md-2 control-label">Day</label>
 
 								<div class="col-md-10">
-									<input type="text" name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control" readonly>
+									<!--<input type="text" name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control" readonly>
+									<div id="schedule_dateError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
+									<span class="help-block" style="display: none;">
+										
+									</span>-->
+									
+									<select name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control">
+										<option value="">Select</option>
+										@for($ii=1;$ii<=50;$ii++)
+											<option value="{{$ii}}">{{$ii}}</option>
+										@endfor
+									</select>
 									<div id="schedule_dateError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
 									<span class="help-block" style="display: none;">
 										
