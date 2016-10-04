@@ -1,4 +1,4 @@
-var siteUrl = "http://192.34.58.254";
+var siteUrl = "http://survacity.in";
 function customizedConfirm(url)
 {
 	if(url != ''){
@@ -279,12 +279,12 @@ $( document ).ready(function() {
         //event.preventDefault();
     });
 	
-	$('#schedule_date1').datetimepicker();
+	/*$('#schedule_date1').datetimepicker();
 	$('#schedule_date2').datetimepicker();
 	$('#schedule_date3').datetimepicker();
 	$('#schedule_date4').datetimepicker();
 	$('#schedule_date5').datetimepicker();
 	$('#schedule_date6').datetimepicker();
-	$('#schedule_date7').datetimepicker();
+	$('#schedule_date7').datetimepicker();*/
 	
 });
