@@ -239,7 +239,7 @@ class HomeController extends Controller
 		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
 		$resultStyles = '';
 		$resultStylesSelected='';
-		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->take(200)->get();
+		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->get();
 		foreach($contacts_all as $contact)
 		{
 			 $resultStyles .= '{id: '.$contact->id.', name: "'.$contact->email.'"},';
@@ -259,7 +259,7 @@ class HomeController extends Controller
 		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
 		$resultStyles = '';
 		$resultStylesSelected='';
-		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->take(200)->get();
+		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->get();
 		foreach($contacts_all as $contact)
 		{
 			 $resultStyles .= '{id: '.$contact->id.', name: "'.$contact->email.'"},';
@@ -290,7 +290,8 @@ class HomeController extends Controller
 		$campaign_step->group_id = $responses['group_name'];
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
-		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime($responses['schedule_date']));
+		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		$campaign_step->scheduled_day = $responses['schedule_date'];
 		$campaign_step->save();
 		
 		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
@@ -316,7 +317,8 @@ class HomeController extends Controller
 		$campaign_step->group_id = $responses['group_name'];
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
-		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime($responses['schedule_date']));
+		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		$campaign_step->scheduled_day = $responses['schedule_date'];
 		$campaign_step->save();
 		
 		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
