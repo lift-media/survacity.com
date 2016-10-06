@@ -290,6 +290,9 @@ class HomeController extends Controller
 		$campaign_step->group_id = $responses['group_name'];
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
+		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
+		$campaign_step->schedule_time = isset($responses['stime'])?$responses['stime']:"";
+		
 		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
 		$campaign_step->scheduled_day = $responses['schedule_date'];
 		$campaign_step->save();
@@ -317,8 +320,12 @@ class HomeController extends Controller
 		$campaign_step->group_id = $responses['group_name'];
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
+		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
+		$campaign_step->schedule_time = isset($responses['stime'])?$responses['stime']:"";
+		
 		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
 		$campaign_step->scheduled_day = $responses['schedule_date'];
+		
 		$campaign_step->save();
 		
 		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();

@@ -15,6 +15,8 @@ class VerifyTeamIsSubscribed
      */
     public function handle($request, $next, $subscription = 'default', $plan = null)
     {
+       return $next($request); //core modified by Ashish later will be removed
+       
         if ($this->subscribed($request->user(), $subscription, $plan, func_num_args() === 2)) {
             return $next($request);
         }
