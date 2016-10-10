@@ -68,12 +68,7 @@ function saveStepData(step)
 		$('#step'+step_no +' #template_name').addClass("errorClassInput");
 		$('#step'+step_no +' #template_nameError').show();
 		return false;
-	}
-	if($('#step'+step_no +' #group_name').val()==""){
-		$('#step'+step_no +' #group_name').addClass("errorClassInput");
-		$('#step'+step_no +' #group_nameError').show();
-		return false;
-	}
+	}	
 	if($('#step'+step_no +' #step_description').val()==""){
 		$('#step'+step_no +' #step_description').addClass("errorClassInput");
 		$('#step'+step_no +' #step_descriptionError').show();
@@ -82,6 +77,41 @@ function saveStepData(step)
 	if($('#schedule_date'+step_no).val()==""){
 		$('#schedule_date'+step_no).addClass("errorClassInput");
 		$('#schedule_dateError'+step_no).show();
+		return false;
+	}
+	
+	
+	
+	var contactList = new Array();
+	
+	if($("input[name='optradio"+step_no+"']").is(":checked"))
+	{
+		var contactOrTeam = $("input[name='optradio"+step_no+"']:checked").val();
+			if(contactOrTeam == "Team"){				
+				if($('#step'+step_no +' #group_name').val()==""){
+					$('#step'+step_no +' #group_name').addClass("errorClassInput");
+					$('#step'+step_no +' #group_nameError').show();
+					return false;
+			}
+		}
+			if(contactOrTeam == "Contact"){
+				var contactLength = $("[name='contacts[]']:checked").length;
+				if(contactLength=="0"){
+					$('#optradioError'+step_no).html('<span class="errorClass">Please select some contacts or select a team</span>');
+					$('#optradioError'+step_no).show();					
+					return false;
+			}else{
+				    
+					$("[name='contacts[]']:checked").each(function() {					
+						
+						contactList.push($(this).val());
+						
+					});				
+					
+			}
+		}
+	}else{				
+		$('#optradioError'+step_no).show();
 		return false;
 	}
 	
@@ -106,7 +136,7 @@ function saveStepData(step)
 	        cache: false,
 	        type: 'get',
 	        url: siteUrl+'/save-steps/'+step_no,
-	        data: { campaign_name: $("#campaign_name").val(), step_no: step_no, t_name: t_name, group_name: group_name, step_description: step_description,  schedule_date: schedule_date, auto_send: auto_send, spick: spick, stime: stime},
+	        data: { campaign_name: $("#campaign_name").val(), step_no: step_no, t_name: t_name, group_name: group_name, step_description: step_description,  schedule_date: schedule_date, auto_send: auto_send, spick: spick, stime: stime, contactList:contactList},
 	        success: function(data) 
 	        {
 	            var obj = $.parseJSON(data);
@@ -133,6 +163,14 @@ function saveStepData(step)
 						   .attr("tabindex", -1)
 						   .focus();
 				$('#step'+step_no +' #LoadingImage').hide();
+				
+				if(obj.contact_ids!="")
+				{
+					$('#step'+step_no +' #contactStepLink').html('<a href="#" onClick="return getSavedContacts('+obj.step_id+','+obj.camp_id+');" data-toggle="modal" data-target="#contactModal">Contacts</a> ');
+				}else{
+					$('#step'+step_no +' #contactStepLink').hide();
+				}
+				
 	        }
 	   });
 	
@@ -167,11 +205,6 @@ function editStepData(step)
 		$('#step'+step_no +' #template_nameError').show();
 		return false;
 	}
-	if($('#step'+step_no +' #group_name').val()==""){
-		$('#step'+step_no +' #group_name').addClass("errorClassInput");
-		$('#step'+step_no +' #group_nameError').show();
-		return false;
-	}
 	if($('#step'+step_no +' #step_description').val()==""){
 		$('#step'+step_no +' #step_description').addClass("errorClassInput");
 		$('#step'+step_no +' #step_descriptionError').show();
@@ -182,7 +215,38 @@ function editStepData(step)
 		$('#schedule_dateError'+step_no).show();
 		return false;
 	}
+	var contactList = new Array();
 	
+	if($("input[name='optradio"+step_no+"']").is(":checked"))
+	{
+		var contactOrTeam = $("input[name='optradio"+step_no+"']:checked").val();
+			if(contactOrTeam == "Team"){				
+				if($('#step'+step_no +' #group_name').val()==""){
+					$('#step'+step_no +' #group_name').addClass("errorClassInput");
+					$('#step'+step_no +' #group_nameError').show();
+					return false;
+			}
+		}
+			if(contactOrTeam == "Contact"){
+				var contactLength = $("[name='contacts[]']:checked").length;
+				if(contactLength=="0"){
+					$('#optradioError'+step_no).html('<span class="errorClass">Please select some contacts or select a team</span>');
+					$('#optradioError'+step_no).show();					
+					return false;
+			}else{
+				    
+					$("[name='contacts[]']:checked").each(function() {					
+						
+						contactList.push($(this).val());
+						
+					});				
+					
+			}
+		}
+	}else{				
+		$('#optradioError'+step_no).show();
+		return false;
+	}
 	var auto_send = "0";
 	var stime = "";
 	var spick = "";
@@ -204,7 +268,7 @@ function editStepData(step)
 	        cache: false,
 	        type: 'get',
 	        url: siteUrl+'/edit-step/'+step_no,
-	        data: { campaign_name: $("#campaign_name").val(), step_no: step_no, t_name: t_name, group_name: group_name, step_description: step_description,  schedule_date: schedule_date, auto_send: auto_send, camp_id: camp_id, step_id: step_id, spick: spick, stime: stime},
+	        data: { campaign_name: $("#campaign_name").val(), step_no: step_no, t_name: t_name, group_name: group_name, step_description: step_description,  schedule_date: schedule_date, auto_send: auto_send, camp_id: camp_id, step_id: step_id, spick: spick, stime: stime , contactList:contactList},
 	        success: function(data) 
 	        {
 	            var obj = $.parseJSON(data);
@@ -236,6 +300,13 @@ function editStepData(step)
 						   .attr("tabindex", -1)
 						   .focus();
 				$('#step'+step_no +' #LoadingImage').hide();
+				
+				if(obj.contact_ids!="")
+				{
+					$('#step'+step_no +' #contactStepLink').html('<a href="#" onClick="return getSavedContacts('+obj.step_id+','+obj.camp_id+');" data-toggle="modal" data-target="#contactModal">Contacts</a> ');
+				}else{
+					$('#step'+step_no +' #contactStepLink').hide();
+				}
 	            
 	        }
 	   });
@@ -308,7 +379,65 @@ function showHideTime(val,step_no)
 		$('#step'+step_no +' #sTime').hide();
 	}
 }
+function openConatctModal(radioValue,step_no)
+{
+	$("input[name='contacts[]'").prop('checked', false);
+	$("#checkAll").prop('checked', false);
+	$('#step'+step_no +' #group_name').val('');
+	if(radioValue=="Contact"){
+		$("#contact_step_no").val(step_no);
+		$("#step"+step_no +" #groupDiv").hide();
+		$('#step'+step_no +' #group_name').removeClass("errorClassInput");
+		$('#step'+step_no +' #group_nameError').hide();
+	}else{
+		$("#contact_step_no").val('');
+		$("#step"+step_no +" #groupDiv").show();
+		$('#optradioError'+step_no).html('<span class="errorClass">This field is required</span>');
+		$('#optradioError'+step_no).hide();		
+	}
+}
+function confirmData()
+{
+	var contactLength = $("[name='contacts[]']:checked").length;
+	if(contactLength=="0")
+	{
+		if(confirm("Are you sure you do not want select contacts"))
+		{
+			$('#myModal').modal('toggle');
+			return true;
+		}else{
+			return false;
+		}
+	}else{
+		$('#myModal').modal('toggle');
+	}	
+}
+function getSavedContacts(step_id,camp_id)
+{
+	
+	$.ajax({
+	        cache: false,
+	        type: 'get',
+	        url: siteUrl+'/get-saved-contacts',
+	        data: {camp_id: camp_id, step_id: step_id},
+	        success: function(data) 
+	        {
+	           $("#contactMainContent").html(data);	           
+	        }
+	   });
+}
 $( document ).ready(function() {
+	
+	$("#checkAll").click(function(){		
+		if($('#checkAll').prop("checked") == true)
+		{
+			$("input[name='contacts[]'").prop('checked', true);
+		}else{
+			$("input[name='contacts[]'").prop('checked', false);
+		}
+	});
+	
+	
 	 $('#btnYes').click(function(event) {
 		var popupurl = $('#popupurl').val(); 
 		if(popupurl != ''){

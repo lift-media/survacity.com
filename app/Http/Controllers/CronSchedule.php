@@ -32,6 +32,11 @@ class CronSchedule extends Controller
 				$contacts = UsersContact::where("group_id","=",$step['group_id'])->orderBy("created_at","asc")->get();
 				$email_template = EmailTemplate::find($step['template_id']);
 				$user = User::find($email_template['user_id']);
+				
+				/*echo "<pre>";
+				print_r($contacts);
+				exit;*/
+				
 				foreach($contacts as $contact)
 				{
 					
@@ -51,7 +56,10 @@ class CronSchedule extends Controller
 
 					$msg = str_replace($searchString, $replaceString,  $e_content);
 					$data['msg'] = $msg.$user['signature'];
-					
+			/*	echo "<pre>";
+				print_r($contacts);
+				print_r($data);
+				exit;*/
 					Mail::queue(['html' =>'emails.email_master'], $data, function ($message) use ($data) {
 						$message->from($data['user_from_email'], $data['user_name']);
 						$message->subject($data['subject']);

@@ -239,12 +239,12 @@ class HomeController extends Controller
 		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
 		$resultStyles = '';
 		$resultStylesSelected='';
-		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->get();
+		$contacts_all = UsersContact::where("first_name","!=","")->where("last_name","!=","")->where("email","!=","")->where("user_id","=",$user->id)->get();
 		foreach($contacts_all as $contact)
 		{
 			 $resultStyles .= '{id: '.$contact->id.', name: "'.$contact->email.'"},';
 		}
-		return view("create_campaign",compact("email_templates","all_teams","current_team","resultStyles","resultStylesSelected"));
+		return view("create_campaign",compact("email_templates","all_teams","current_team","contacts_all","resultStylesSelected"));
 	}
 	public function showEmails()
 	{
@@ -271,9 +271,16 @@ class HomeController extends Controller
 		return redirect("manage-emails");
 	}
 	public function saveSteps(Request $request)
-	{		
+	{
 		$responses = $request->all();
 		$user = Auth::user();
+		
+		$contList = "";
+		if(isset($responses['contactList']) && count($responses['contactList'])!="0")
+		{		
+			$contList = implode(",",$responses['contactList']);
+		}
+		
 		$campaign = Campaign::where("campaign_name","=",$responses['campaign_name'])->where("user_id","=",$user->id)->first();
 		if(!isset($campaign)){
 			$campaign = new Campaign;
@@ -281,13 +288,17 @@ class HomeController extends Controller
 			$campaign->campaign_name = $responses['campaign_name'];
 			$campaign->total_steps = "1";
 			$campaign->save();
-		}	
-		
+		}
+		$group_name = "0";	
+		if($responses['group_name']!="")
+		{		
+			$group_name = $responses['group_name'];
+		}
 		$campaign_step = new CampaignStep;
 		$campaign_step->campaign_id = $campaign->id;
 		$campaign_step->step_no = $responses['step_no'];
 		$campaign_step->template_id = $responses['t_name'];
-		$campaign_step->group_id = $responses['group_name'];
+		$campaign_step->group_id = $group_name;
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
 		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
@@ -295,6 +306,8 @@ class HomeController extends Controller
 		
 		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
 		$campaign_step->scheduled_day = $responses['schedule_date'];
+		$campaign_step->contact_ids = $contList;
+		
 		$campaign_step->save();
 		
 		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
@@ -302,7 +315,7 @@ class HomeController extends Controller
 		$campaign->total_steps = count($campaign_count);
 		$campaign->save();
 		
-		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id);
+		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id, "contact_ids"=>$contList,"groupId"=>$group_name);
 		return json_encode($returnData);
 		
 	}
@@ -310,14 +323,27 @@ class HomeController extends Controller
 	{		
 		$responses = $request->all();
 		$user = Auth::user();
+		
+		
+		$contList = "";
+		if(isset($responses['contactList']) && count($responses['contactList'])!="0")
+		{		
+			$contList = implode(",",$responses['contactList']);
+		}
+		
 		$campaign = Campaign::where("id","=",$responses['camp_id'])->where("user_id","=",$user->id)->first();
-			
+		
+		$group_name = "0";	
+		if($responses['group_name']!="")
+		{		
+			$group_name = $responses['group_name'];
+		}	
 		$campaign_step = CampaignStep::where("id","=",$responses['step_id'])->first();
 		
 		$campaign_step->campaign_id = $campaign->id;
 		$campaign_step->step_no = $responses['step_no'];
 		$campaign_step->template_id = $responses['t_name'];
-		$campaign_step->group_id = $responses['group_name'];
+		$campaign_step->group_id = $group_name;
 		$campaign_step->step_description = $responses['step_description'];
 		$campaign_step->auto_send_status = $responses['auto_send'];
 		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
@@ -325,7 +351,7 @@ class HomeController extends Controller
 		
 		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
 		$campaign_step->scheduled_day = $responses['schedule_date'];
-		
+		$campaign_step->contact_ids = $contList;
 		$campaign_step->save();
 		
 		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
@@ -333,7 +359,7 @@ class HomeController extends Controller
 		$campaign->total_steps = count($campaign_count);
 		$campaign->save();
 		
-		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id);
+		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id, "contact_ids"=>$contList,"groupId"=>$group_name);
 		return json_encode($returnData);
 		
 	}
@@ -367,8 +393,9 @@ class HomeController extends Controller
 		$current_team = $user->currentTeam;
 		$all_teams = $user->teams;
 		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();	
-		$campaign = Campaign::with("campaignStep")->where("id","=",$request->id)->where("user_id","=",$user->id)->first();		
-		return view("edit_campaign",compact("email_templates","all_teams","current_team","campaign"));
+		$campaign = Campaign::with("campaignStep")->where("id","=",$request->id)->where("user_id","=",$user->id)->first();
+		$contacts_all = UsersContact::where("first_name","!=","")->where("last_name","!=","")->where("email","!=","")->where("user_id","=",$user->id)->get();		
+		return view("edit_campaign",compact("email_templates","all_teams","current_team","campaign", "contacts_all"));
 	}
 	public function saveCampaignName(Request $request)
 	{
@@ -378,5 +405,47 @@ class HomeController extends Controller
 		$campaign->campaign_name = $responses['campaign_name'];
 		$campaign->save();
 		return;
+	}
+	public function getSavedContacts(Request $request)
+	{
+		$responses = $request->all();
+		$user = Auth::user();
+		
+		$campaign_step = CampaignStep::where("id","=",$responses['step_id'])->where("campaign_id","=",$responses['camp_id'])->first();
+		
+		if($campaign_step['contact_ids']!="")
+		{
+			$cIds = explode(",",$campaign_step['contact_ids']);
+			$contacts = UsersContact::whereIn('id', $cIds)->get();
+			
+			
+			$resTableHeader = '<table class="table">
+							<thead>
+							<tr>
+							<th>S.No</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							</tr>
+						</thead>
+											
+						<tbody>';
+						$i=1;
+			$resTableBody="";
+			foreach($contacts as $contact)
+			{
+				$resTableBody .="<tr>
+						<td>".$i."</td>
+						<td>".$contact['first_name']."</td>
+						<td>".$contact['last_name']."</td>
+						<td>".$contact['email']."</td>
+					</tr>";
+					$i++;
+			}
+				$resTableFooter = "	</tbody>
+						</table>";
+		}
+		
+		return $resTableHeader.$resTableBody.$resTableFooter;
 	}
 }

@@ -58,7 +58,7 @@
 						<div id="step{{$i}}" class="step_cls">
 							<div class="form-group">
 									<div class="col-md-2  camp-step-lbl">Step {{$i}}</div>
-									<div class="col-md-7 ">
+									<div class="col-md-6 ">
 										
 											  <select name="schedule_date{{$i}}" id="schedule_date{{$i}}" class="form-control select-wd-80">
 													<option value="">Select</option>
@@ -69,11 +69,14 @@
 									    
 										<div class="camp-step-lbl">Day</div>
 									</div>
-									<div class="col-md-3 camp-save-delete" id="changeLinks">
+									<div class="col-md-2 camp-save-delete" id="changeLinks">
 										<a href="#" onClick="return saveStepData({{$i}});">Save</a> 
 										<a href="#" onClick="return deleteBlankData({{$i}});">Delete</a>
 										
-										</div>
+									</div>
+									<div class="col-md-2 camp-save-delete" id="contactStepLink">
+										
+									</div>
 									<input type="hidden" name="editStepId{{$i}}" id="editStepId{{$i}}" value="">
 							</div>
 							<div class="form-group LoadingImage" id="LoadingImage" style="display:none;">
@@ -91,6 +94,41 @@
 									</span>
 								</div>
 							</div>	
+							
+							<!-- Contacts-->
+							
+							<div class="form-group">							
+							
+							<div class="col-md-4 col-md-offset-2">
+								<label class="radio-inline " >
+								  <input type="radio" name="optradio{{$i}}" value="Contact"  onclick="openConatctModal(this.value,{{$i}});" data-toggle="modal" data-target="#myModal">Contacts
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="optradio{{$i}}" value="Team" onclick="openConatctModal(this.value,{{$i}});">Teams
+								</label>
+								<div id="optradioError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
+							</div>
+							<div id="groupDiv" style="display: none;">
+								<label class="col-md-2 control-label">Teams</label>
+
+								<div class="col-md-4">
+									<select name="group_name" id="group_name" class="form-control">
+										<option value="">Select</option>
+										@foreach($all_teams as $team)
+											<option value="{{$team->id}}">{{$team->name}}</option>
+										@endforeach
+									</select>
+									<div id="group_nameError" style="display:none;"><span class="errorClass">This field is required</span></div>
+									<span class="help-block" style="display: none;">
+										
+									</span>
+								</div>
+							</div>
+						</div>
+							
+							<!---contacts-->
+							
+							
 								<!-- Template Name -->
 						<div class="form-group">
 							<input type="hidden" name="step_number" id="step_number{{$i}}" value="{{$i}}">	
@@ -110,7 +148,7 @@
 									</span>
 								</div>
 								
-								<label class="col-md-2 control-label">Team</label>
+								<?php /*?><label class="col-md-2 control-label">Team</label>
 
 								<div class="col-md-4">
 									<select name="group_name" id="group_name" class="form-control">
@@ -122,7 +160,7 @@
 									<span class="help-block" style="display: none;">
 										
 									</span>
-								</div>
+								</div><?php */?>
 						</div>
 						
 						<div class="form-group">
@@ -155,7 +193,83 @@
 					
 					
 						<!-- Second Step Start-->
-				
+							<!-- Modal -->
+						  <div class="modal fade" id="myModal" role="dialog">
+							<div class="modal-dialog">
+							
+							  <!-- Modal content-->
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+								  <h4 class="modal-title">Select Contacts
+									<div class="pull-right">
+										  
+										   <button class="btn btn-primary" type="button" onclick="return confirmData();">Done</button>
+									 </div>
+								  
+								  </h4>
+								</div>
+								<div class="modal-body">
+									<input type="hidden" name="contact_step_no" id="contact_step_no" value="">
+									<table class="table">
+										<thead>
+											<tr>
+											<th><input type="checkbox" name="checkAll" id="checkAll" value="" /></th>
+											<th>First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+											</tr>
+										</thead>
+											
+										<tbody>
+											@foreach($contacts_all as $contact)
+												<tr>
+												<td><input type="checkbox" name="contacts[]" value="{{$contact['id']}}" /></td>
+												<td>{{$contact['first_name']}}</td>
+												<td>{{$contact['last_name']}}</td>
+												<td>{{$contact['email']}}</td>
+												</tr>
+											@endforeach
+										</tbody>
+									</table>
+								</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							  </div>
+							  
+							</div>
+						  </div>
+						  
+						  <!-- Contact Modal -->
+						  <div class="modal fade" id="contactModal" role="dialog">
+							<div class="modal-dialog">
+							
+							  <!-- Modal content-->
+							  <div class="modal-content">
+								<div class="modal-header">
+								  <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+								  <h4 class="modal-title">Selected Contacts
+									<div class="pull-right">
+										  
+										   <button class="btn btn-default" type="button" data-dismiss="modal">&times;</button>
+									 </div>
+								  
+								  </h4>
+								</div>
+								<div class="modal-body">
+									<div id="contactMainContent">
+										
+										
+									</div>									
+								</div>
+								<div class="modal-footer">
+								  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							  </div>
+							  
+							</div>
+						  </div>
 						<!---Second Step End -->
             </form>
                     </div>

@@ -41,7 +41,7 @@ Route::get('delete-step/{id}', 'HomeController@deleteStep');
 Route::get('edit-campaign/{id}', 'HomeController@showEditCampaign');
 Route::get('save-campaign-name/{id}', 'HomeController@saveCampaignName');
 Route::put('/settings/profile/details', 'ProfileDetailsController@update');
-
+Route::get('get-saved-contacts', 'HomeController@getSavedContacts');
 
 Route::get('send-scheduled-email', 'CronSchedule@sendScheduledEmail');
 
