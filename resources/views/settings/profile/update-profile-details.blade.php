@@ -1,6 +1,6 @@
 <update-profile-details :user="user" inline-template>
      <div class="panel panel-default">
-        <div class="panel-heading">Email Setting</div>
+        <div class="panel-heading">Email Setting <div class="pull-right"><a href="/google">Google Auth</a></div></div>
 
         <div class="panel-body">
             <!-- Success Message -->
