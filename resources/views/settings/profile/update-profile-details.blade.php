@@ -1,15 +1,29 @@
 <update-profile-details :user="user" inline-template>
      <div class="panel panel-default">
-        <div class="panel-heading">Email Setting <div class="pull-right"><a href="/google">Google Auth</a></div></div>
+        <div class="panel-heading">Email Setting </div>
 
         <div class="panel-body">
             <!-- Success Message -->
             <div class="alert alert-success" v-if="form.successful">
                 Email setting has been updated!
             </div>
-
+            <div class="row">
+				 <div class="col-md-10">
+					<h4>Current Email Server</h4>
+				</div>
+			</div>
+			 <div class="row">                   
+					<div class="col-md-4 text-right">
+						Gmail Connection
+                    </div>
+                    <div class="col-md-6 ">
+                        <div id='lblEmail'></div>
+                    </div>
+              </div>
+              <div class="row">
+			  </div>
             <form class="form-horizontal" role="form">
-                <!-- From Email -->
+                {{-- From Email 
                 <div class="form-group" :class="{'has-error': form.errors.has('from_email')}">
                     <label class="col-md-4 control-label">Sent From Email</label>
 
@@ -20,10 +34,10 @@
                             @{{ form.errors.get('from_email') }}
                         </span>
                     </div>
-                </div>
+                </div> --}}
                 
                 <!-- From Email -->
-                <div class="form-group" :class="{'has-error': form.errors.has('signature')}">
+                <div class="form-group" :class="{'has-error': form.errors.has('signature')}" style=" margin-top:20px;">
                     <label class="col-md-4 control-label">Email Signature</label>
 
                     <div class="col-md-6">

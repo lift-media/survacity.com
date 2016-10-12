@@ -24,13 +24,8 @@ class ProfileDetailsController extends Controller
      * @return Response
      */
     public function update(Request $request)
-    {
-        $this->validate($request, [
-            'from_email' => 'required|email',            
-        ]);
-
-        $request->user()->forceFill([
-            'from_email' => $request->from_email,
+    {        
+        $request->user()->forceFill([           
             'signature' => $request->signature,
         ])->save();
     }
@@ -42,7 +37,9 @@ class ProfileDetailsController extends Controller
      */
     public function redirectToProvider()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+						->with(["access_type" => "offline", "prompt" => "consent select_account"]) // Added for token expire immediate
+						->redirect();
     }
 
     /**
