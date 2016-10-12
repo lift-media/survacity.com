@@ -34041,7 +34041,7 @@ Vue.component('update-profile-details', {
     },
     ready: function ready() {
         var fromEmail = this.user.from_email;
-        if (this.user.from_email != "") {
+        if (fromEmail != "" || fromEmail != null) {
             $('#lblEmail').html("You are Connected as " + fromEmail + '<a href="/google" class="btn-connect btn btn-success">Connect a Different Gmail Account</a>');
         } else {
             $('#lblEmail').html('You are not connected <a href="/google" class="btn-connect btn btn-success">Connect a Gmail Account</a>');
