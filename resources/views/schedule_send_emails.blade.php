@@ -28,16 +28,16 @@
 
 									<div class="col-md-10">
 										<label class="radio-inline">
-										  <input type="radio" name="optradio" checked="checked">Team
+										  <input type="radio" name="optradio" checked="checked" onclick="changedTeamVsIndividual(this.value);" value="Team">Team
 										</label>
 										<label class="radio-inline">
-										  <input type="radio" name="optradio" >Individual
+										  <input type="radio" name="optradio" onclick="changedTeamVsIndividual(this.value);" value="Individual">Individual
 										</label>
 									</div>
 								</div>
 							
 						<!-- Team -->
-						<div class="form-group">
+						<div class="form-group" id="teamSelect">
 								<label class="col-md-2 control-label">Team</label>
 
 								<div class="col-md-10">
@@ -53,11 +53,21 @@
 								</div>
 						</div>	
 					  	<!-- Individual -->
-						<div class="form-group">
+						<div class="form-group" id="indEmails" style="display:none;">
 								<label class="col-md-2 control-label">Select Email(s)</label>
 
 								<div class="col-md-10">
-									<input type="text" name="last_name" id="last_name" class="form-control">
+									<input class="textbox3 form-control" type="text" value="" name="properties_selected" id="demo-input" autocomplete="off">						 
+									<script type="text/javascript">
+										 $(document).ready(function() {
+												$("#demo-input").tokenInput([<?php echo $resultStyles; ?>], {
+												<?php if($resultStylesSelected!=''){?>
+													prePopulate: [<?php echo $resultStylesSelected?>],
+													<?php } ?>
+												theme: "facebook"
+												});
+											});							
+									</script> 
 
 									<span class="help-block" style="display: none;">
 										
@@ -88,7 +98,7 @@
 								<label class="col-md-2 control-label">Schedule Date</label>
 
 								<div class="col-md-10">
-									<input type="text" name="schedule-date" id="schedule-date" class="form-control input-group date">
+									<input type="text" name="schedule-date" id="schedule-date" class="form-control">
 
 									<span class="help-block" style="display: none;">
 										

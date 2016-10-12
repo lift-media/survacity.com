@@ -2,7 +2,6 @@
 
 @section('content')
 <home :user="user" inline-template>
-	
     <div class="container">
         <!-- Application Dashboard -->
         <div class="row">

@@ -33,3 +33,25 @@ Route::post('add-contact', 'HomeController@saveAddContact');
 Route::get('edit-contact/{id}', 'HomeController@showEditContact');
 Route::post('edit-contact/{id}', 'HomeController@saveEditContact');
 Route::get('delete-contact/{id}', 'HomeController@deleteContact');
+Route::get('manage-campaigns', 'HomeController@showManageCampaigns');
+Route::get('create-campaign', 'HomeController@showCreateCampaign');
+Route::get('save-steps/{id}', 'HomeController@saveSteps');
+Route::get('edit-step/{id}', 'HomeController@saveEdittedStep');
+Route::get('delete-step/{id}', 'HomeController@deleteStep');
+Route::get('edit-campaign/{id}', 'HomeController@showEditCampaign');
+Route::get('save-campaign-name/{id}', 'HomeController@saveCampaignName');
+Route::put('/settings/profile/details', 'ProfileDetailsController@update');
+Route::get('get-saved-contacts', 'HomeController@getSavedContacts');
+Route::get('/google', 'ProfileDetailsController@redirectToProvider');
+Route::get('/google/callback', 'ProfileDetailsController@handleProviderCallback');
+
+
+
+
+Route::get('send-scheduled-email', 'CronSchedule@sendScheduledEmail');
+
+
+
+Route::get('manage-emails', 'HomeController@showEmails');
+Route::get('schedule-send-emails', 'HomeController@showScheduleSendEmails');
+Route::post('schedule-send-emails', 'HomeController@saveScheduleSendEmails');

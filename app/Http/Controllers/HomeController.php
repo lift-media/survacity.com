@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Auth;
 use App\EmailTemplate;
 use App\UsersContact;
+use App\Campaign;
+use App\CampaignStep;
 use Validator;
 use Excel;
 use Carbon\Carbon;
@@ -51,8 +53,7 @@ class HomeController extends Controller
 		$this->validate($request, [
 		'template_name' => 'required',
 		'template_subject' => 'required', 
-        'template_body' => 'required',
-        'template_signature' => 'required',             
+        'template_body' => 'required',                     
 		]);
 		$user = Auth::user();
 		$responses = $request->all();
@@ -60,8 +61,7 @@ class HomeController extends Controller
 		$email_template->user_id = $user->id;
 		$email_template->template_name = $responses['template_name'];
 		$email_template->template_subject = $responses['template_subject'];
-		$email_template->template_body = $responses['template_body'];
-		$email_template->template_signature = $responses['template_signature'];
+		$email_template->template_body = $responses['template_body'];		
 		$email_template->save();
 		return redirect("/manage-email-template")->with('status',"Email template added successfully");
 	}
@@ -76,8 +76,7 @@ class HomeController extends Controller
 		$this->validate($request, [
 		'template_name' => 'required',
 		'template_subject' => 'required', 
-        'template_body' => 'required',
-        'template_signature' => 'required',             
+        'template_body' => 'required',                    
 		]);
 		
 		$user = Auth::user();
@@ -88,8 +87,7 @@ class HomeController extends Controller
 			//$email_template->user_id = $user->id;
 			$email_template->template_name = $responses['template_name'];
 			$email_template->template_subject = $responses['template_subject'];
-			$email_template->template_body = $responses['template_body'];
-			$email_template->template_signature = $responses['template_signature'];
+			$email_template->template_body = $responses['template_body'];			
 			$email_template->save();
 		}
 		
@@ -195,7 +193,7 @@ class HomeController extends Controller
 		$current_team = $user->currentTeam;
 		$all_teams = $user->teams;
 		
-		$contacts_all = UsersContact::where("first_name","!=","")->where("group_id","=",$user->currentTeam->id)->take(200)->get();
+		$contacts_all = UsersContact::where("first_name","!=","")->where("group_id","=",$user->currentTeam->id)->get();
 		return view("listed_contacts",compact("contacts_all","all_teams","current_team"));
 	}
 	public function showEditContact(Request $request)
@@ -227,8 +225,30 @@ class HomeController extends Controller
 		UsersContact::where('id', $request->id)->delete();
 		return redirect('/listed-contacts')->with('status',"User's contact deleted successfully");
 	}
+	public function showManageCampaigns()
+	{
+		$user = Auth::user();
+		$campaign = Campaign::where("user_id","=",$user->id)->get();
+		return view("manage_campaigns",compact("campaign"));
+	}
+	public function showCreateCampaign()
+	{
+		$user = Auth::user();
+		$current_team = $user->currentTeam;
+		$all_teams = $user->teams;
+		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
+		$resultStyles = '';
+		$resultStylesSelected='';
+		$contacts_all = UsersContact::where("first_name","!=","")->where("last_name","!=","")->where("email","!=","")->where("user_id","=",$user->id)->get();
+		foreach($contacts_all as $contact)
+		{
+			 $resultStyles .= '{id: '.$contact->id.', name: "'.$contact->email.'"},';
+		}
+		return view("create_campaign",compact("email_templates","all_teams","current_team","contacts_all","resultStylesSelected"));
+	}
 	public function showEmails()
 	{
+		
 		return view("manage_emails");
 	}
 	public function showScheduleSendEmails()
@@ -237,10 +257,195 @@ class HomeController extends Controller
 		$current_team = $user->currentTeam;
 		$all_teams = $user->teams;
 		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();
-		return view("schedule_send_emails",compact("email_templates","all_teams","current_team"));
+		$resultStyles = '';
+		$resultStylesSelected='';
+		$contacts_all = UsersContact::where("email","!=","")->where("group_id","=",$user->currentTeam->id)->get();
+		foreach($contacts_all as $contact)
+		{
+			 $resultStyles .= '{id: '.$contact->id.', name: "'.$contact->email.'"},';
+		}
+		return view("schedule_send_emails",compact("email_templates","all_teams","current_team","resultStyles","resultStylesSelected"));
 	}
 	public function saveScheduleSendEmails()
 	{
 		return redirect("manage-emails");
+	}
+	public function saveSteps(Request $request)
+	{
+		$responses = $request->all();
+		$user = Auth::user();
+		
+		$contList = "";
+		if(isset($responses['contactList']) && count($responses['contactList'])!="0")
+		{		
+			$contList = implode(",",$responses['contactList']);
+		}
+		
+		$campaign = Campaign::where("campaign_name","=",$responses['campaign_name'])->where("user_id","=",$user->id)->first();
+		if(!isset($campaign)){
+			$campaign = new Campaign;
+			$campaign->user_id = $user->id;
+			$campaign->campaign_name = $responses['campaign_name'];
+			$campaign->total_steps = "1";
+			$campaign->save();
+		}
+		$group_name = "0";	
+		if($responses['group_name']!="")
+		{		
+			$group_name = $responses['group_name'];
+		}
+		$campaign_step = new CampaignStep;
+		$campaign_step->campaign_id = $campaign->id;
+		$campaign_step->step_no = $responses['step_no'];
+		$campaign_step->template_id = $responses['t_name'];
+		$campaign_step->group_id = $group_name;
+		$campaign_step->step_description = $responses['step_description'];
+		$campaign_step->auto_send_status = $responses['auto_send'];
+		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
+		$campaign_step->schedule_time = isset($responses['stime'])?$responses['stime']:"";
+		
+		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		$campaign_step->scheduled_day = $responses['schedule_date'];
+		$campaign_step->contact_ids = $contList;
+		
+		$campaign_step->save();
+		
+		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
+		
+		$campaign->total_steps = count($campaign_count);
+		$campaign->save();
+		
+		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id, "contact_ids"=>$contList,"groupId"=>$group_name);
+		return json_encode($returnData);
+		
+	}
+	public function saveEdittedStep(Request $request)
+	{		
+		$responses = $request->all();
+		$user = Auth::user();
+		
+		
+		$contList = "";
+		if(isset($responses['contactList']) && count($responses['contactList'])!="0")
+		{		
+			$contList = implode(",",$responses['contactList']);
+		}
+		
+		$campaign = Campaign::where("id","=",$responses['camp_id'])->where("user_id","=",$user->id)->first();
+		
+		$group_name = "0";	
+		if($responses['group_name']!="")
+		{		
+			$group_name = $responses['group_name'];
+		}	
+		$campaign_step = CampaignStep::where("id","=",$responses['step_id'])->first();
+		
+		$campaign_step->campaign_id = $campaign->id;
+		$campaign_step->step_no = $responses['step_no'];
+		$campaign_step->template_id = $responses['t_name'];
+		$campaign_step->group_id = $group_name;
+		$campaign_step->step_description = $responses['step_description'];
+		$campaign_step->auto_send_status = $responses['auto_send'];
+		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
+		$campaign_step->schedule_time = isset($responses['stime'])?$responses['stime']:"";
+		
+		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		$campaign_step->scheduled_day = $responses['schedule_date'];
+		$campaign_step->contact_ids = $contList;
+		$campaign_step->save();
+		
+		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
+		
+		$campaign->total_steps = count($campaign_count);
+		$campaign->save();
+		
+		$returnData = array("camp_id"=>$campaign->id, "step_id"=>$campaign_step->id, "contact_ids"=>$contList,"groupId"=>$group_name);
+		return json_encode($returnData);
+		
+	}
+	public function deleteStep(Request $request)
+	{		
+		$responses = $request->all();
+		$user = Auth::user();
+		$campaign = Campaign::where("id","=",$responses['camp_id'])->where("user_id","=",$user->id)->first();
+			
+		$campaign_step = CampaignStep::where("id","=",$responses['step_id'])->delete();
+	
+		$campaign_count = CampaignStep::where("campaign_id","=",$campaign->id)->get();
+		$camp_idr = "";
+		if(count($campaign_count)==0)
+		{
+			$campaign = Campaign::where("id","=",$responses['camp_id'])->delete();
+			
+		}else{		
+			$campaign->total_steps = count($campaign_count);
+			$campaign->save();
+			$camp_idr = $campaign->id;
+		}
+		
+		
+		return $camp_idr;
+		
+	}
+	public function showEditCampaign(Request $request)
+	{
+		$user = Auth::user();	
+		$current_team = $user->currentTeam;
+		$all_teams = $user->teams;
+		$email_templates = EmailTemplate::where("user_id","=",$user->id)->get();	
+		$campaign = Campaign::with("campaignStep")->where("id","=",$request->id)->where("user_id","=",$user->id)->first();
+		$contacts_all = UsersContact::where("first_name","!=","")->where("last_name","!=","")->where("email","!=","")->where("user_id","=",$user->id)->get();		
+		return view("edit_campaign",compact("email_templates","all_teams","current_team","campaign", "contacts_all"));
+	}
+	public function saveCampaignName(Request $request)
+	{
+		$responses = $request->all();
+		$user = Auth::user();
+		$campaign = Campaign::where("id","=",$responses['camp_id'])->where("user_id","=",$user->id)->first();
+		$campaign->campaign_name = $responses['campaign_name'];
+		$campaign->save();
+		return;
+	}
+	public function getSavedContacts(Request $request)
+	{
+		$responses = $request->all();
+		$user = Auth::user();
+		
+		$campaign_step = CampaignStep::where("id","=",$responses['step_id'])->where("campaign_id","=",$responses['camp_id'])->first();
+		
+		if($campaign_step['contact_ids']!="")
+		{
+			$cIds = explode(",",$campaign_step['contact_ids']);
+			$contacts = UsersContact::whereIn('id', $cIds)->get();
+			
+			
+			$resTableHeader = '<table class="table">
+							<thead>
+							<tr>
+							<th>S.No</th>
+							<th>First Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							</tr>
+						</thead>
+											
+						<tbody>';
+						$i=1;
+			$resTableBody="";
+			foreach($contacts as $contact)
+			{
+				$resTableBody .="<tr>
+						<td>".$i."</td>
+						<td>".$contact['first_name']."</td>
+						<td>".$contact['last_name']."</td>
+						<td>".$contact['email']."</td>
+					</tr>";
+					$i++;
+			}
+				$resTableFooter = "	</tbody>
+						</table>";
+		}
+		
+		return $resTableHeader.$resTableBody.$resTableFooter;
 	}
 }

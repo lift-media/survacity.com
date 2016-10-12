@@ -71,7 +71,7 @@
 </head>
 <body>
     <div class="full-height flex-column">
-       <!-- <nav class="links">
+        <nav class="links">
             <a href="/login" style="margin-right: 15px;">
                 <button>
                     Login
@@ -83,12 +83,11 @@
                     Register
                 </button>
             </a>
-        </nav>-->
+        </nav>
 
         <div class="flex-fill flex-center">
             <h1 class="text-center" style="font-size: 72px;font-weight: bold;">
-                <i aria-hidden="true" class="fa fa-paper-plane-o"></i> Survacity<br/>
-                <span style="font-size: 20px;font-weight: normal;padding-top:-10px">Coming Soon........</span>
+                <i aria-hidden="true" class="fa fa-paper-plane-o"></i> Survacity
             </h1>
         </div>
     </div>

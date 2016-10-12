@@ -22,7 +22,11 @@
 							</select>
 						</span>
 						<span style="float:right;">
-							<a href="/add-contact"><button class="btn btn-sm btn-primary pull-right mtb10" type="button">Add Contact</button></a>
+							
+							<a href="/import-contacts" ><button class="btn btn-sm btn-success mtb10" type="button">Import</button></a>
+							<a href="/add-contact"><button class="btn btn-sm btn-primary mtb10" type="button">Add Contact</button></a>
+							
+							
 						</span>
 					</div>
 

@@ -1,0 +1,39 @@
+/* 28 Sep 2016 */
+.navbar-nav li a:hover{
+	color: #3097d1 !important;
+}
+.activeTop {
+	color: #3097d1 !important;
+	border-bottom: 3px solid #3097d1;
+}
+.errorClass{
+	color:red;   font-size: 12px;
+}
+.errorClassInput{
+	border: 1px solid red;
+}
+
+
+.camp-save{ float:right; text-align:right;}
+.camp-save a{ font-weight:bold; display:inline-block; margin:2px 3px 0;}
+.camp-save-delete{ float:right; text-align:right;}
+.camp-save-delete a{ font-weight:bold; display:inline-block; margin:8px 3px 0;}
+.camp-step-lbl{ float:left; padding:8px 15px 0 15px;}
+.camp-steps-txt{ float:left; width:100%; }
+.camp-steps-txt h5{ font-weight:bold; border-bottom:1px solid #ccc; padding:0 0 5px 0; margin:5px 0 0 0; }
+.select-wd-80 {float: left;    width: 25%;}
+#schedule_send_email .form-group textarea#step_description{ height:60px;}
+.form-horizontal .control-label.campgn-auto-send{ padding:0;}
+.camp-custom-time{ display:none;}
+.campgn-auto-send input{ display:inline-block; vertical-align:sub;}
+#schedule_send_email .form-group { margin-bottom: 12px;}
+#schedule_send_email .form-group .form-control{ height:32px;padding:4px 10px;}
+.step-seprator{ margin:10px 0; border-bottom:1px solid #ccc;}
+
+
+.panel-heading.create-camp-head{ float:left; width:100%;}
+.panel-heading.create-camp-head .pull-left{ padding:5px 0;}
+.form-horizontal .form-group.LoadingImage{margin:0; position:absolute; z-index:99999; background: rgba(0, 0, 0, 0.1) none repeat scroll 0 0; top:0; width:100%; height:100%; }
+.LoadingImage img{ position:absolute; top:40%; left:50%;}
+.step_cls{ position:relative;}
+

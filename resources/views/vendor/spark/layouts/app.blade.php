@@ -16,10 +16,10 @@
     <link href="/css/sweetalert.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 	<link rel="stylesheet" href="/datatables/jquery.dataTables.min.css">
-	<link href="/css/oneui.css" rel="stylesheet">
-	
+	<!--<link href="/css/oneui.css" rel="stylesheet">-->
+	<link href="/css/custom.css" rel="stylesheet">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">	
-	<!--<link rel="stylesheet" href="{{url('css')}}/styles.css">-->
+	<!--<link rel="stylesheet" href="{{url('css')}}/styles.css"> Used for muliple email select-->
 	<link rel="stylesheet" href="{{url('css/token-input.css')}}" type="text/css" />
 	<link rel="stylesheet" href="{{url('css/token-input-fb.css')}}" type="text/css" />
 	

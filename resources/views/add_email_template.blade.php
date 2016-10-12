@@ -65,18 +65,7 @@
 								</div>
 							</div>
 							
-							<!-- Template Signature -->
-							<div class="form-group">
-								<label class="col-md-2 control-label">Signature</label>
-
-								<div class="col-md-10">
-									<textarea name="template_signature" id="template_signature" rows="3" cols="50" class="form-control"></textarea>
-
-									<span class="help-block" style="display: none;">
-										
-									</span>
-								</div>
-							</div>
+							
 
 							<!-- Update Button -->
 							<div class="form-group">
