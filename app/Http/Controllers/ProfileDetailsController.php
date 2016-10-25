@@ -37,8 +37,13 @@ class ProfileDetailsController extends Controller
      */
     public function redirectToProvider()
     {
+         $scopes = [
+            'https://www.googleapis.com/auth/calendar',
+            'https://mail.google.com/',
+        ];
         return Socialite::driver('google')
-						->with(["access_type" => "offline", "prompt" => "consent select_account"]) // Added for token expire immediate
+						->with(["access_type" => "offline", "prompt" => "consent select_account"])// Added for token expire immediate
+						->scopes($scopes)
 						->redirect();
     }
 
