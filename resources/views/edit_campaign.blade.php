@@ -101,12 +101,15 @@
 							
 							<div class="col-md-4 col-md-offset-2">
 								<label class="radio-inline " >
-								  <input type="radio" name="optradio{{$i}}" value="Contact"  onclick="openConatctModal(this.value,{{$i}});" data-toggle="modal" data-target="#myModal" @if($step['contact_ids']!="") {{"checked"}} @else  {{""}} @endif>Contacts
+								  <input type="radio" name="optradio{{$i}}" id="optradio{{$i}}" value="Contact"  onclick="openConatctModal(this.value,{{$i}});" data-toggle="modal" data-target="#myModal" @if($step['contact_ids']!="") {{"checked"}} @else  {{""}} @endif>Contacts
 								</label>
 								<label class="radio-inline">
-								  <input type="radio" name="optradio{{$i}}" value="Team" onclick="openConatctModal(this.value,{{$i}});" @if($step['group_id']!="0") {{"checked"}} @else  {{""}} @endif>Teams
+								  <input type="radio" name="optradio{{$i}}" id="optradio{{$i}}" value="Team" onclick="openConatctModal(this.value,{{$i}});" @if($step['group_id']!="0") {{"checked"}} @else  {{""}} @endif>Teams
 								</label>
-								<div id="optradioError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
+								<div id="optradio{{$i}}Error" style="display:none;"><span class="errorClass">This field is required</span></div>
+							</div>
+							<div id="contDiv{{$i}}" style="display: none;">
+								<div class="col-md-6">Selected contacts are <strong><span id="contLen{{$i}}"></span></strong></div>
 							</div>
 							<div id="groupDiv" @if($step['group_id']!="0") style="display:block;" @else style="display:none;" @endif>
 								<label class="col-md-2 control-label">Teams</label>

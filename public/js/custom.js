@@ -13,7 +13,7 @@ function changedTeamVsIndividual(va)
 {
 	if(va=="Team"){
 		$('#teamSelect').show();
-		$('#indEmails').hide();
+		$('#indEmails').hide();		
 	}else if(va=="Individual"){
 		$('#teamSelect').hide();
 		$('#indEmails').show();
@@ -97,8 +97,8 @@ function saveStepData(step)
 			if(contactOrTeam == "Contact"){
 				var contactLength = $("[name='contacts[]']:checked").length;
 				if(contactLength=="0"){
-					$('#optradioError'+step_no).html('<span class="errorClass">Please select some contacts or select a team</span>');
-					$('#optradioError'+step_no).show();					
+					$('#optradio'+step_no+'Error').html('<span class="errorClass">Please select some contacts or select a team</span>');
+					$('#optradio'+step_no+'Error').show();					
 					return false;
 			}else{
 				    
@@ -111,7 +111,7 @@ function saveStepData(step)
 			}
 		}
 	}else{				
-		$('#optradioError'+step_no).show();
+		$('#optradio'+step_no+'Error').show();
 		return false;
 	}
 	
@@ -230,8 +230,8 @@ function editStepData(step)
 			if(contactOrTeam == "Contact"){
 				var contactLength = $("[name='contacts[]']:checked").length;
 				if(contactLength=="0"){
-					$('#optradioError'+step_no).html('<span class="errorClass">Please select some contacts or select a team</span>');
-					$('#optradioError'+step_no).show();					
+					$('#optradio'+step_no+'Error').html('<span class="errorClass">Please select some contacts or select a team</span>');
+					$('#optradio'+step_no+'Error').show();					
 					return false;
 			}else{
 				    
@@ -244,7 +244,7 @@ function editStepData(step)
 			}
 		}
 	}else{				
-		$('#optradioError'+step_no).show();
+		$('#optradio'+step_no+'Error').show();
 		return false;
 	}
 	var auto_send = "0";
@@ -384,16 +384,17 @@ function openConatctModal(radioValue,step_no)
 	$("input[name='contacts[]'").prop('checked', false);
 	$("#checkAll").prop('checked', false);
 	$('#step'+step_no +' #group_name').val('');
+	$("#contDiv"+step_no).hide();
 	if(radioValue=="Contact"){
-		$("#contact_step_no").val(step_no);
+		$("#contact_step_no").val(step_no);		
 		$("#step"+step_no +" #groupDiv").hide();
 		$('#step'+step_no +' #group_name').removeClass("errorClassInput");
 		$('#step'+step_no +' #group_nameError').hide();
 	}else{
 		$("#contact_step_no").val('');
 		$("#step"+step_no +" #groupDiv").show();
-		$('#optradioError'+step_no).html('<span class="errorClass">This field is required</span>');
-		$('#optradioError'+step_no).hide();		
+		$('#optradio'+step_no+'Error').html('<span class="errorClass">This field is required</span>');
+		$('#optradio'+step_no+'Error').hide();		
 	}
 }
 function confirmData()
@@ -463,7 +464,37 @@ $( document ).ready(function() {
 		maxView: 1,
 		forceParse: 0
 		});
-	
+	$( "#schedule_send_email input" ).keypress(function( event ) {
+		$(this).removeClass("errorClassInput");
+		var ID = $(this).attr("id");
+		$(this).next("#"+ID+"Error").hide();
+		$("#"+ID+"Error").hide();
+	});
+	$( "#schedule_send_email input" ).click(function( event ) {
+		$(this).removeClass("errorClassInput");
+		var ID = $(this).attr("id");		
+		$(this).next("#"+ID+"Error").hide();		
+		$("#"+ID+"Error").hide();
+	});
+	$( "#schedule_send_email textarea" ).keypress(function( event ) {
+		$(this).removeClass("errorClassInput");
+		var ID = $(this).attr("id");
+		$(this).next("#"+ID+"Error").hide();
+		$("#"+ID+"Error").hide();
+	});
+	$( "#schedule_send_email select" ).change(function( event ) {
+		$(this).removeClass("errorClassInput");
+		var ID = $(this).attr("id");
+		$(this).next("#"+ID+"Error").hide();
+		$("#"+ID+"Error").hide();
+	});
+	$('#myModal').on('hidden.bs.modal', function () {
+		var stpNo = $("#contact_step_no").val();
+		var contactLength = $("[name='contacts[]']:checked").length;
+		$("#contDiv"+stpNo).show();
+		$("#contLen"+stpNo).html(contactLength);
+		//alert(stpNo+"contactLength"+contactLength);
+	});
 	/*$('#schedule_date1').datetimepicker();
 	$('#schedule_date2').datetimepicker();
 	$('#schedule_date3').datetimepicker();
