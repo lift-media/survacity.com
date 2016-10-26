@@ -38,6 +38,6 @@ return [
 	'google' => [
     'client_id' => '949638696552-1f03qjdcqmnrp0j5vtb42tsg2lmgu72l.apps.googleusercontent.com',
     'client_secret' => 'y2-9grwZqXv07xnWTvdBH_Tb',
-    'redirect' => 'http://192.34.58.254/google/callback',
+    'redirect' => 'http://survacity.com/google/callback',
 	],
 ];

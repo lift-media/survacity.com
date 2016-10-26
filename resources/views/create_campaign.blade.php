@@ -101,12 +101,15 @@
 							
 							<div class="col-md-4 col-md-offset-2">
 								<label class="radio-inline " >
-								  <input type="radio" name="optradio{{$i}}" value="Contact"  onclick="openConatctModal(this.value,{{$i}});" data-toggle="modal" data-target="#myModal">Contacts
+								  <input type="radio" name="optradio{{$i}}" id="optradio{{$i}}" value="Contact"  onclick="openConatctModal(this.value,{{$i}});" data-toggle="modal" data-target="#myModal">Contacts
 								</label>
 								<label class="radio-inline">
-								  <input type="radio" name="optradio{{$i}}" value="Team" onclick="openConatctModal(this.value,{{$i}});">Teams
+								  <input type="radio" name="optradio{{$i}}" id="optradio{{$i}}" value="Team" onclick="openConatctModal(this.value,{{$i}});">Teams
 								</label>
-								<div id="optradioError{{$i}}" style="display:none;"><span class="errorClass">This field is required</span></div>
+								<div id="optradio{{$i}}Error" style="display:none;"><span class="errorClass">This field is required</span></div>
+							</div>
+							<div id="contDiv{{$i}}" style="display: none;">
+								<div class="col-md-6">Selected contacts are <strong><span id="contLen{{$i}}"></span></strong></div>
 							</div>
 							<div id="groupDiv" style="display: none;">
 								<label class="col-md-2 control-label">Teams</label>
