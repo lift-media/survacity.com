@@ -35,7 +35,7 @@
 								<td>{{ $i }}</td>
 								<td>{{ $email_template['campaign_name'] }}</td>
 								<td>{{ $email_template['total_steps'] }}</td>
-								<td>@if($email_template['status']=="0") {{"Pending"}} @else {{"Send"}} @endif</td>								
+								<td>@if($email_template['status']=="0") {{"Pending"}} @else {{"Sent"}} @endif</td>								
 								<td>
 									<a href="/edit-campaign/{{$email_template['id']}}">
 										<button type="button" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></button>
