@@ -303,8 +303,13 @@ class HomeController extends Controller
 		$campaign_step->auto_send_status = $responses['auto_send'];
 		$campaign_step->schedule_picked = isset($responses['spick'])?$responses['spick']:"";
 		$campaign_step->schedule_time = isset($responses['stime'])?$responses['stime']:"";
-		
-		$campaign_step->schedule_date = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		if($responses['schedule_date']=="1")
+		{
+			$sDate = date("Y-m-d H:i:s");
+		}else{
+			$sDate = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
+		}
+		$campaign_step->schedule_date = $sDate;		
 		$campaign_step->scheduled_day = $responses['schedule_date'];
 		$campaign_step->contact_ids = $contList;
 		
