@@ -59,6 +59,10 @@ class MailChannel
                 $m->to($recipients);
             }
 
+            if ($message->cc) {
+                $m->cc($message->cc);
+            }
+
             $m->subject($message->subject ?: Str::title(
                 Str::snake(class_basename($notification), ' ')
             ));
@@ -69,6 +73,10 @@ class MailChannel
 
             foreach ($message->rawAttachments as $attachment) {
                 $m->attachData($attachment['data'], $attachment['name'], $attachment['options']);
+            }
+
+            if (! is_null($message->priority)) {
+                $m->setPriority($message->priority);
             }
         });
     }

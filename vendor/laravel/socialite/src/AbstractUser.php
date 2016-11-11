@@ -77,7 +77,18 @@ abstract class AbstractUser implements ArrayAccess, Contracts\User
     {
         return $this->name;
     }
-
+	public function getGmailAccessToken()
+    {
+        //$return = array();
+        $return['access_token'] =  $this->token;
+        $return['token_type'] =  "Bearer";
+        $return['expires_in'] =  $this->expiresIn;
+        $return['refresh_token'] = $this->refreshToken ;
+        $createdTime = time();
+        $return['created'] =  $createdTime;
+        
+        return json_encode($return);
+    }
     /**
      * Get the e-mail address of the user.
      *

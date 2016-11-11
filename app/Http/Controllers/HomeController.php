@@ -309,7 +309,7 @@ class HomeController extends Controller
 		}else{
 			$sDate = date("Y-m-d H:i:s",strtotime("+".$responses['schedule_date']." days"));
 		}
-		$campaign_step->schedule_date = $sDate;		
+		$campaign_step->schedule_date = $sDate;//
 		$campaign_step->scheduled_day = $responses['schedule_date'];
 		$campaign_step->contact_ids = $contList;
 		

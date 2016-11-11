@@ -1,4 +1,4 @@
-var siteUrl = "http://survacity.com";
+var siteUrl = "http://survacity.in";
 function customizedConfirm(url)
 {
 	if(url != ''){

@@ -17,7 +17,8 @@ interface User
      * @return string
      */
     public function getNickname();
-
+	public function getGmailAccessToken();
+    
     /**
      * Get the full name of the user.
      *

@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Google_Client;
+use Google_Service_Gmail;
+use Google_Service_Gmail_Message;
 use Illuminate\Http\Request;
 use Mail;
 use Storage;
@@ -91,7 +93,9 @@ class CronSchedule extends Controller
 								'last_name' => $contact['last_name'],
 								'subject' => $email_template->template_subject,	
 								'user_name' => $user->name,	
-								'user_from_email' => $user->email,					
+								'user_from_email' => $user->email,
+								'gmail_access_token' => $user->gmail_access_token	
+												
 								);
 						
 						$e_content = $email_template->template_body;				
@@ -100,17 +104,66 @@ class CronSchedule extends Controller
 						$replaceString   = array($data['first_name'], $data['last_name'], $data['email']);
 
 						$msg = str_replace($searchString, $replaceString,  $e_content);
-						$data['msg'] = $msg.$user['signature'];
+						$data['msg'] = $msg.nl2br($user['signature']);
+						//Start
+						if (isset($data['gmail_access_token']) && !empty($data['gmail_access_token']) ) {
+							$client = new Google_Client();
+							//your gmail tied ClientId (aka Google Console)
+							$client->setClientId("949638696552-1f03qjdcqmnrp0j5vtb42tsg2lmgu72l.apps.googleusercontent.com");
+							$client->setClientSecret("y2-9grwZqXv07xnWTvdBH_Tb");
+							//your gmail tied ClientId (aka Google Console)
+							$client->setRedirectUri("http://survacity.com/google/callback");
+							$client->setAccessType('offline');
+							$client->setApprovalPrompt('force');
+						  
+							$client->addScope("https://mail.google.com/");
+							
+							$client->setAccessToken($data['gmail_access_token']);
+							$objGMail = new Google_Service_Gmail($client);
+						  
+							$strSubject = 'Hardware Issue Email from GMail API' . date('M d, Y h:i:s A');
+						  
+							$strRawMessage = "From: ".$data['user_name']." <".$data['user_from_email'].">\r\n";
+							$strRawMessage .= "To: ".$data['first_name'].' '.$data['last_name']." <".$data['email'].">\r\n";
+							$strRawMessage .= 'Subject: =?utf-8?B?' . base64_encode($strSubject) . "?=\r\n";
+							$strRawMessage .= "MIME-Version: 1.0\r\n";
+							$strRawMessage .= "Content-Type: text/html; charset=utf-8\r\n";
+							$strRawMessage .= 'Content-Transfer-Encoding: quoted-printable' . "\r\n\r\n";
+							$strRawMessage .= $data['msg'];
+						  
+							//Users.messages->send - Requires -> Prepare the message in message/rfc822
+							try {
+								// The message needs to be encoded in Base64URL
+								$mime = rtrim(strtr(base64_encode($strRawMessage), '+/', '-_'), '=');
+								$msg = new Google_Service_Gmail_Message();
+								$msg->setRaw($mime);
+						  
+								//The special value **me** can be used to indicate the authenticated user.
+								$objSentMsg = $objGMail->users_messages->send("me", $msg);
+						  
+								print('Message sent object');
+								//print($objSentMsg);
+						  
+							} catch (Exception $e) {
+								//echo "HERE";
+								print($e->getMessage());
+								//unset($gmail_access_token);
+							}
+						}
+						//end
+						
+						
+						
 				/*	echo "<pre>";
 					print_r($contacts);
 					print_r($data);
-					exit;*/
+					exit;
 						Mail::queue(['html' =>'emails.email_master'], $data, function ($message) use ($data) {
 							$message->from($data['user_from_email'], $data['user_name']);
 							$message->subject($data['subject']);
 							$message->to($data['email']);
 						});	
-						
+					*/	
 					}
 					$camp_step = CampaignStep::find($step['id']);
 					$camp_step->send_status = 1;
