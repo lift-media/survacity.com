@@ -121,7 +121,7 @@ class CronSchedule extends Controller
 							$client->setAccessToken($data['gmail_access_token']);
 							$objGMail = new Google_Service_Gmail($client);
 						  
-							$strSubject = 'Hardware Issue Email from GMail API' . date('M d, Y h:i:s A');
+							$strSubject = $data['subject'];//'Hardware Issue Email from GMail API' . date('M d, Y h:i:s A');
 						  
 							$strRawMessage = "From: ".$data['user_name']." <".$data['user_from_email'].">\r\n";
 							$strRawMessage .= "To: ".$data['first_name'].' '.$data['last_name']." <".$data['email'].">\r\n";
